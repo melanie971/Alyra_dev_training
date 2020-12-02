@@ -17,7 +17,7 @@ contract Voting is Ownable{
 
   
   	uint winningProposalId;
-  	string proposalName;
+  	//string proposalName;
 
 
 	mapping(address => Voter) public RegisteredVoters; // Le registre des voteurs
@@ -140,17 +140,23 @@ contract Voting is Ownable{
 			    }
 			}
 			
-    	currentWorkflowStatus = WorkflowStatus.VotesTallied;
-    	emit VotesTallied();
-    	emit WorkflowStatusChange(WorkflowStatus.VotingSessionEnded, WorkflowStatus.VotesTallied);
     	return winningProposalId;
 
 		}
 
-    // Etape 9 - 
-      function LookAtTheWinningProposal() public inState(WorkflowStatus.VotesTallied) returns (string memory proposalName)
+	// Etape 9 - L'administateur indique "VotesTallied"
+	function votesTallied() public inState(WorkflowStatus.VotingSessionEnded) onlyOwner returns(uint)
+		{
+			currentWorkflowStatus = WorkflowStatus.VotesTallied;
+	    	emit VotesTallied();
+	    	emit WorkflowStatusChange(WorkflowStatus.VotingSessionEnded, WorkflowStatus.VotesTallied);
+		}
+
+
+    // Etape 10 - 
+      function LookAtTheWinningProposal() public view inState(WorkflowStatus.VotesTallied) returns (string memory proposalName)
       {
-        proposalName = proposals[TheWinnerIs()].description;
+        proposalName = proposals[winningProposalId].description;
         }
     
 }
