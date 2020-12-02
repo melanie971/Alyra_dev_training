@@ -69,6 +69,7 @@ contract Voting is Ownable{
 	  {
 	  	emit ProposalsRegistrationStarted();
 	  	currentWorkflowStatus = WorkflowStatus.ProposalsRegistrationStarted;
+	  	emit WorkflowStatusChange(WorkflowStatus.RegisteringVoters, WorkflowStatus.ProposalsRegistrationStarted);
 	  }
 
 	 //Etape 3 - Les électeurs inscrits sont autorisés à enregistrer leur propostion
@@ -88,6 +89,7 @@ contract Voting is Ownable{
 		{
 			currentWorkflowStatus = WorkflowStatus.ProposalsRegistrationEnded;
 			emit ProposalsRegistrationEnded();
+			emit WorkflowStatusChange(WorkflowStatus.ProposalsRegistrationStarted, WorkflowStatus.ProposalsRegistrationEnded);
 		}
 
 
@@ -96,6 +98,7 @@ contract Voting is Ownable{
 		{
 			currentWorkflowStatus = WorkflowStatus.VotingSessionStarted;
 			emit VotingSessionStarted();
+			emit WorkflowStatusChange(WorkflowStatus.ProposalsRegistrationEnded, WorkflowStatus.VotingSessionStarted);
 		}
 
 
@@ -120,6 +123,7 @@ contract Voting is Ownable{
 		{
 			currentWorkflowStatus = WorkflowStatus.VotingSessionEnded;
 			emit VotingSessionEnded();
+			emit WorkflowStatusChange(WorkflowStatus.VotingSessionStarted, WorkflowStatus.VotingSessionEnded);
 		}
 
   
@@ -138,6 +142,7 @@ contract Voting is Ownable{
 			
     	currentWorkflowStatus = WorkflowStatus.VotesTallied;
     	emit VotesTallied();
+    	emit WorkflowStatusChange(WorkflowStatus.VotingSessionEnded, WorkflowStatus.VotesTallied);
     	return winningProposalId;
 
 		}
@@ -150,15 +155,5 @@ contract Voting is Ownable{
     
 }
 		
-
-
-    
-//       //Going Back to Previous Status
-       
-//     function GoBackToPreviousStatus() public onlyOwner
-// 			{
-// 				currentWorkflowStatus -=;
-// 				emit WorkflowStatusChange(previousStatus);
-// 			}
 
 
