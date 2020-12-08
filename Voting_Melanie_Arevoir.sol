@@ -157,6 +157,7 @@ contract Voting is Ownable{
       function LookAtTheWinningProposal() public view inState(WorkflowStatus.VotesTallied) returns (string memory proposalName)
       {
         proposalName = proposals[winningProposalId].description;
+        return(ProposalName);
         }
     
 }
